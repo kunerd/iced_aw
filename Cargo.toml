@@ -68,9 +68,8 @@ num-traits = { version = "0.2.19", optional = true }
 web-time = "1.1.0"
 
 [dependencies.iced]
-#git = "https://github.com/iced-rs/iced.git"
-#rev = "b474a2b7a763dcde6a377cb409001a7b5285ee8d"
-version = "0.13.1"
+git = "https://github.com/iced-rs/iced.git"
+rev = "4b075b9731f4658a885357024cc77dee10e223c3"
 default-features = false
 features = ["advanced"]
 
@@ -83,9 +82,8 @@ rand = "0.9.0"            # For wrap example
 getrandom = { version = "0.3.1", features = ["wasm_js"]}
 
 [dev-dependencies.iced]
-#git = "https://github.com/iced-rs/iced.git"
-#rev = "b474a2b7a763dcde6a377cb409001a7b5285ee8d"
-version = "0.13.0"
+git = "https://github.com/iced-rs/iced.git"
+rev = "4b075b9731f4658a885357024cc77dee10e223c3"
 #default-features = false
 features = ["advanced", "wgpu"]
 

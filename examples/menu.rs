@@ -232,10 +232,10 @@ impl App {
                 (debug_button("Item"))
             )).width(240.0))
             (debug_button_s("Controls"), menu_tpl_1(menu_items!(
-                (row![toggler(
-                        self.dark_mode,
-                    ).label("Dark Mode".to_string()).on_toggle(Message::ThemeChange)].padding([0, 8])
-                )
+                //(row![toggler(
+                //        self.dark_mode,
+                //    ).label("Dark Mode".to_string()).on_toggle(Message::ThemeChange)].padding([0, 8])
+                //)
                 (color_button([0.45, 0.25, 0.57]))
                 (color_button([0.15, 0.59, 0.64]))
                 (color_button([0.76, 0.82, 0.20]))
@@ -494,7 +494,7 @@ fn submenu_button(label: &str) -> button::Button<Message, iced::Theme, iced::Ren
                 .width(Length::Fill)
                 .align_y(alignment::Vertical::Center),
             text(icon_to_string(RequiredIcons::CaretRightFill))
-                .font(REQUIRED_FONT)
+                //.font(REQUIRED_FONT)
                 .width(Length::Shrink)
                 .align_y(alignment::Vertical::Center),
         ]

@@ -13,7 +13,7 @@ use iced::{
         widget::{Operation, Tree},
         Clipboard, Layout, Shell,
     },
-    event, Event, Point, Rectangle, Size, Vector,
+    Event, Point, Rectangle, Size, Vector,
 };
 
 use super::{common::*, menu_bar::MenuBarState, menu_tree::*};
@@ -180,17 +180,15 @@ where
     }
 
     #[allow(unused_results)]
-    fn on_event(
+    fn update(
         &mut self,
-        event: Event,
+        event: &Event,
         layout: Layout<'_>,
         cursor: mouse::Cursor,
         renderer: &Renderer,
         clipboard: &mut dyn Clipboard,
         shell: &mut Shell<'_, Message>,
-    ) -> event::Status {
-        use event::Status::*;
-
+    ) {
         let viewport = layout.bounds();
         let mut lc = layout.children();
         let bar_bounds = lc.next().unwrap().bounds();
@@ -199,12 +197,12 @@ where
         let bar = self.tree.state.downcast_mut::<MenuBarState>();
 
         let Some(active) = bar.active_root else {
-            return Ignored;
+            return;
         };
 
         let parent_bounds = roots_layout.children().nth(active).unwrap().bounds();
         let Some(menu_layouts_layout) = lc.next() else {
-            return Ignored;
+            return;
         }; // Node{0, [menu_node...]}
         let mut menu_layouts = menu_layouts_layout.children(); // [menu_node...]
 
@@ -291,7 +289,7 @@ where
                 RecEvent::Event => RecEvent::Event,
                 RecEvent::Close => {
                     if menu_state.pressed || cursor.is_over(prescroll){
-                        menu.on_event(menu_tree, event, menu_layout, cursor, renderer, clipboard, shell, viewport, scroll_speed);
+                        menu.update(menu_tree, event, menu_layout, cursor, renderer, clipboard, shell, viewport, scroll_speed);
                         menu.open_event(menu_tree, menu_layout, cursor);
                         RecEvent::Event
                     } else if cursor.is_over(offset_bounds) {
@@ -307,7 +305,7 @@ where
                 }
                 RecEvent::None => {
                     if menu_state.pressed || cursor.is_over(prescroll){
-                        menu.on_event(menu_tree, event, menu_layout, cursor, renderer, clipboard, shell, viewport, scroll_speed);
+                        menu.update(menu_tree, event, menu_layout, cursor, renderer, clipboard, shell, viewport, scroll_speed);
                         menu.open_event(menu_tree, menu_layout, cursor);
                         RecEvent::Event
                     } else if cursor.is_over(offset_bounds) {
@@ -336,12 +334,13 @@ where
         );
 
         match re {
-            RecEvent::Event => Captured,
+            RecEvent::Event => shell.request_redraw(), //Captured,
             RecEvent::Close | RecEvent::None => {
                 if cursor.is_over(bar_bounds) {
-                    Ignored
+                    // Ignored
                 } else {
-                    Captured
+                    shell.request_redraw();
+                    // Captured
                 }
             }
         }
