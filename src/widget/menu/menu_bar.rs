@@ -207,7 +207,7 @@ where
             Event::Mouse(mouse::Event::ButtonPressed(mouse::Button::Left)) => {
                 if cursor.is_over(bar_bounds) {
                     bar.is_pressed = true;
-                    shell.request_redraw();
+                    shell.capture_event();
                 }
             }
             Event::Mouse(mouse::Event::ButtonReleased(mouse::Button::Left)) => {
@@ -220,7 +220,7 @@ where
                             break;
                         }
                     }
-                    shell.request_redraw();
+                    shell.capture_event();
                 }
             }
             Event::Mouse(mouse::Event::CursorMoved { .. }) => {
@@ -232,11 +232,10 @@ where
                                 break;
                             }
                         }
-                        shell.request_redraw();
                     } else {
                         bar.open = false;
-                        shell.request_redraw();
                     }
+                    shell.capture_event();
                 }
             }
             _ => {}

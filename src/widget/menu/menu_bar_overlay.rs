@@ -334,13 +334,10 @@ where
         );
 
         match re {
-            RecEvent::Event => shell.request_redraw(), //Captured,
+            RecEvent::Event => shell.capture_event(),
             RecEvent::Close | RecEvent::None => {
-                if cursor.is_over(bar_bounds) {
-                    // Ignored
-                } else {
-                    shell.request_redraw();
-                    // Captured
+                if !cursor.is_over(bar_bounds) {
+                    shell.capture_event();
                 }
             }
         }
