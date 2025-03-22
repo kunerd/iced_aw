@@ -364,17 +364,13 @@ where
                         scroll_speed,
                         viewport.size(),
                     );
-                    //Captured
-                    shell.request_redraw();
+                    shell.capture_event();
                 } else if cursor.is_over(offset_bounds) || cursor.is_over(check_bounds) {
-                    //Captured
-                    shell.request_redraw();
+                    shell.capture_event();
                 }
             }
             _ => {}
         };
-
-        shell.request_redraw();
     }
 
     pub(super) fn operate(
