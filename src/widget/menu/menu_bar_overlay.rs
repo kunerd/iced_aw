@@ -8,6 +8,7 @@
 
 use iced::{
     advanced::{
+        graphics::core::window,
         layout::{Limits, Node},
         mouse, overlay, renderer,
         widget::{Operation, Tree},
@@ -243,6 +244,20 @@ where
             let offset_bounds = mc.next().unwrap().bounds();
             prev_bounds_list.push(prescroll);
 
+            if let Event::Window(window::Event::RedrawRequested(_now)) = event {
+                menu.update(
+                    menu_tree,
+                    event,
+                    menu_layout,
+                    cursor,
+                    renderer,
+                    clipboard,
+                    shell,
+                    viewport,
+                    scroll_speed
+                );
+            }
+
             let menu_state = menu_tree.state.downcast_mut::<MenuState>();
 
             let rec_event = if let Some(active) = menu_state.active {
@@ -334,7 +349,9 @@ where
         );
 
         match re {
-            RecEvent::Event => shell.capture_event(),
+            RecEvent::Event => {
+                shell.capture_event();
+            }
             RecEvent::Close | RecEvent::None => {
                 if !cursor.is_over(bar_bounds) {
                     shell.capture_event();

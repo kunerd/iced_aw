@@ -188,17 +188,15 @@ where
         shell: &mut Shell<'_, Message>,
         viewport: &Rectangle,
     ) {
-        let iter = self
-            .roots
+        self.roots
             .iter_mut() // [Item...]
             .zip(tree.children.iter_mut()) // [item_tree...]
-            .zip(layout.children()); // [widget_node...]
-
-        for ((item, tree), layout) in iter {
-            item.update(
-                tree, event, layout, cursor, renderer, clipboard, shell, viewport,
-            )
-        }
+            .zip(layout.children())
+            .for_each(|((item, tree), layout)| {
+                item.update(
+                    tree, event, layout, cursor, renderer, clipboard, shell, viewport,
+                )
+            }); // [widget_node...]
 
         let bar = tree.state.downcast_mut::<MenuBarState>();
         let bar_bounds = layout.bounds();

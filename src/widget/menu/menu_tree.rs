@@ -14,6 +14,7 @@ use super::common::*;
 use super::flex;
 use iced::advanced::overlay::Group;
 use iced::advanced::widget::Operation;
+use iced::overlay::menu;
 use iced::Pixels;
 use iced::{
     advanced::{
@@ -325,26 +326,14 @@ where
         let menu_state = tree.state.downcast_mut::<MenuState>();
         let slice = &menu_state.slice;
 
-        // let status = self.items[slice.start_index..=slice.end_index] // [item...]
-        //     .iter_mut()
-        //     .zip(tree.children[slice.start_index..=slice.end_index].iter_mut()) // [item_tree...]
-        //     .zip(slice_layout.children()) // [item_layout...]
-        //     .map(|((item, tree), layout)| {
-        //         item.update(
-        //             tree, event, layout, cursor, renderer, clipboard, shell, viewport,
-        //         )
-        //     })
-        //     .fold(Ignored, event::Status::merge);
-        let iter = self.items[slice.start_index..=slice.end_index] // [item...]
+        self.items[slice.start_index..=slice.end_index] // [item...]
             .iter_mut()
             .zip(tree.children[slice.start_index..=slice.end_index].iter_mut()) // [item_tree...]
-            .zip(slice_layout.children()); // [item_layout...]
-
-        for ((item, tree), layout) in iter {
+            .zip(slice_layout.children())
+            .for_each(|((item, tree), layout)|  // [item_layout...]
             item.update(
                 tree, event, layout, cursor, renderer, clipboard, shell, viewport,
-            )
-        }
+            ));
 
         match event {
             Event::Mouse(mouse::Event::ButtonPressed(mouse::Button::Left)) => {
@@ -771,7 +760,7 @@ where
             clipboard,
             shell,
             viewport,
-        )
+        );
     }
 
     /// tree: Tree{stateless, \[widget_tree, menu_tree]}
